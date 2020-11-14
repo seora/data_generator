@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>363</width>
+    <height>620</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QComboBox" name="intent">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>463</y>
+     <width>181</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>메뉴 주문</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>빈 자리 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>가격 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>메뉴 추천</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>식재료 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>예약 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>주문 변경</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>배달 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>영업시간 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>특정재료 첨삭 요구</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>밑반찬 및 토핑 요청</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>결제 방식 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>음료 주문</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>양에 대한 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>식기 및 비품 요청</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>이벤트 및 행사 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>서비스 문의</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>맛 정도 문의 및 요청</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>매장 확인</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QRadioButton" name="speaker2">
+   <property name="geometry">
+    <rect>
+     <x>68</x>
+     <y>9</y>
+     <width>61</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>점원</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">speakgroup</string>
+   </attribute>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>570</y>
+     <width>341</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>대화 끝내기</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="speaker1">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>고객</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">speakgroup</string>
+   </attribute>
+  </widget>
+  <widget class="QRadioButton" name="qa_q">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>464</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Q</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">qagroup</string>
+   </attribute>
+  </widget>
+  <widget class="QPlainTextEdit" name="sentence">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>500</y>
+     <width>261</width>
+     <height>61</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="chatlist">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>40</y>
+     <width>341</width>
+     <height>411</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="send">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>498</y>
+     <width>81</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>전송</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="qa_a">
+   <property name="geometry">
+    <rect>
+     <x>61</x>
+     <y>464</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>A</string>
+   </property>
+   <attribute name="buttonGroup">
+    <string notr="true">qagroup</string>
+   </attribute>
+  </widget>
+  <widget class="QComboBox" name="category">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>10</y>
+     <width>141</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>한식</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>분식</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>양식</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>일식</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>중식</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>치킨</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>피자</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="speakgroup"/>
+  <buttongroup name="qagroup"/>
+ </buttongroups>
+</ui>
