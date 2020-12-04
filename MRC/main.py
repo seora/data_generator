@@ -2,6 +2,9 @@ import csv
 import os
 import re
 import sys
+
+import pandas as pd
+import openpyxl
 import xlrd
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import QIcon
@@ -14,6 +17,7 @@ from ui.mainwindow_ui import Ui_MainWindow
 
 class MainWindow(Ui_MainWindow):
 
+    global fname
     global filename
     filename = ""
     global datalist
@@ -24,6 +28,7 @@ class MainWindow(Ui_MainWindow):
     global PageIdxlist;    PageIdxlist = []
     global idx; idx=0
     global lastdata;     lastdata = 0
+    global category
 
     def __init__(self, mw):
         Ui_MainWindow.__init__(self)
@@ -40,8 +45,11 @@ class MainWindow(Ui_MainWindow):
         self.nextBtn.clicked.connect(self.onNextPage)
         self.switchBtn.clicked.connect(self.onSwitchPage)
 
+        self.category.currentIndexChanged.connect(self.searchbyCategory)
+
 
     def loadData(self):
+        global fname
         global filename
         global datalist
         global my_file
@@ -50,58 +58,91 @@ class MainWindow(Ui_MainWindow):
         popup.setStandardButtons(QMessageBox.Ok)
 
         fname = QFileDialog.getOpenFileName(None, 'Dialog Title', './', filter='*.csv *.xlsx')
-        if fname[0]:
-            filename = fname[0]
+        fn, ext = os.path.splitext(fname[0])
+        print(fname)
+        if ext == '.csv':
+            if fname[0]:
+                filename = fname[0]
+                try:
+                    with open(filename, encoding = 'utf-8') as csv_file:
+                        self.data_table.setRowCount(0)
+                        self.data_table.setColumnCount(12)
+                        my_file = csv.reader(csv_file)
+                        print(my_file)
+                        self.initializeData()
+
+                except FileNotFoundError:
+                    popup.setText("파일이 존재하지 않습니다")
+                    popup.exec_()
+                    pass
+
+            else:
+                popup.setText("파일을 선택해주세요")
+                popup.exec_()
+
+        elif ext == '.xlsx':
             try:
-                with open(filename, encoding = 'utf-8') as csv_file:
-                    self.data_table.setRowCount(0)
-                    self.data_table.setColumnCount(12)
-                    my_file = csv.reader(csv_file)
-                    self.initializeData()
+                filename = fname[0]
+                book = pd.read_excel(filename, dtype=str)
+                book = book.fillna("")
+                my_file = book.values.tolist()
+                self.data_table.setRowCount(0)
+                self.data_table.setColumnCount(12)
+
+                self.initializeData()
 
             except FileNotFoundError:
                 popup.setText("파일이 존재하지 않습니다")
                 popup.exec_()
                 pass
 
-        else:
-            popup.setText("파일을 선택해주세요")
-            popup.exec_()
-
     def saveData(self):
+        global fname
+        global datalist
+
         popup = QMessageBox()
         popup.setStandardButtons(QMessageBox.Ok)
 
-        filename, selectedFilter = QFileDialog.getSaveFileName(None, 'Save Data', 'test.csv', "Excel (*.csv *.xlsx )")
-        if filename:
-            try:
-                with open(filename, "w", encoding='utf-8') as csv_file:
-                    writer = csv.writer(csv_file)
+        fn, ext = os.path.splitext(fname[0])
 
-                    for row in datalist:
-                        writer.writerrow(row)
-                        """
-                        row_data = []
-                        for column in range(self.data_table.columnCount()):
-                            item = self.data_table.item(row, column)
-                            if item is not None:
-                                row_data.append(item.text())
-                            else:
-                                row_data.append('')
-                        writer.writerow(row_data)
-                        print(row_data)
-                        """
+        if ext == ".csv":
+            #filename, selectedFilter = QFileDialog.getSaveFileName(None, 'Save File', fname[0], "Excel (*.csv *.xlsx)")
+            filename, selectedFilter = QFileDialog.getSaveFileName(None, 'Save File', fname[0], "Excel (*.csv)")
+
+            if filename:
+                try:
+                    with open(filename, "w", encoding='utf-8') as csv_file:
+                        writer = csv.writer(csv_file)
+                        for row in datalist:
+                            writer.writerow(row)
+
+                    popup.setText("데이터가 저장되었습니다")
+                    popup.exec_()
+
+                except Exception as ex:  # 에러 종류
+                    print('에러가 발생 했습니다', ex)  # ex는 발생한 에러의 이름을 받아오는 변수
+                    popup.setText("데이터가 저장되지 않았습니다")
+                    popup.exec_()
+
+            else:
+                popup.setText("데이터가 저장되지 않았습니다")
+                popup.exec_()
+
+        elif ext == '.xlsx':
+            print('엑셀 파일')
+            filename, selectedFilter = QFileDialog.getSaveFileName(None, 'Save File', fname[0], "Excel (*.xlsx)")
+
+            try:
+                df = pd.DataFrame.from_records(datalist)
+                df.to_excel(filename)
 
                 popup.setText("데이터가 저장되었습니다")
                 popup.exec_()
 
-            except:
+            except Exception as ex:  # 에러 종류
+                print('에러가 발생 했습니다', ex)  # ex는 발생한 에러의 이름을 받아오는 변수
                 popup.setText("데이터가 저장되지 않았습니다")
                 popup.exec_()
-
-        else:
-            popup.setText("데이터가 저장되지 않았습니다")
-            popup.exec_()
 
     def refreshData(self):
         global filename
@@ -149,6 +190,11 @@ class MainWindow(Ui_MainWindow):
             popup.setText("찾으려는 텍스트가 존재하지 않습니다")
             popup.exec_()
 
+    #카테고리로 검색
+    def searchbyCategory(self):
+        global category
+
+
     def initializeData(self):
         global datalist
         global my_file
@@ -186,7 +232,6 @@ class MainWindow(Ui_MainWindow):
         self.currentPage.setText("1")
         self.updateStatus()
 
-
     def onPrevPage(self):
         global idx
 
@@ -203,7 +248,6 @@ class MainWindow(Ui_MainWindow):
             self.currentPage.setText(str(idx))
             self.updateStatus()
             print(idx)
-
 
     def onNextPage(self):
         global idx
@@ -247,7 +291,6 @@ class MainWindow(Ui_MainWindow):
                 else:
                     self.data_table.setItem(row, column, item)
 
-
     def onSwitchPage(self):
         global idx
         global totalPage
@@ -269,7 +312,6 @@ class MainWindow(Ui_MainWindow):
 
         self.currentPage.setText(str(idx + 1))
         self.updateStatus()
-
 
     def CreateData(self):
         chw = QDialog()
